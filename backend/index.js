@@ -18,8 +18,9 @@ const userPassword = process.env.USERPASSWORD;
 console.log(process.env.USERNAME);
 
 //database connection with mongodb atlas
-mongoose.connect(`mongodb+srv://swapnilkumartailor:${userPassword}@cluster0.hls6pnz.mongodb.net/e-commerce`);
-
+// mongoose.connect(`mongodb+srv://swapnilkumartailor:${userPassword}@cluster0.hls6pnz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`);
+mongoose.connect(`mongodb+srv://swapnilkumartailor:${userPassword}@cluster0.hls6pnz.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0`);
+console.log("connected to mongodb");
 
 app.get('/',(req,res)=>{
     return res.send("this is slash /");
@@ -139,7 +140,8 @@ app.post('/signup',async (req,res)=>{
 app.post('/login',async (req,res)=>{
     let user = await Users.findOne({email:req.body.email});
     if(user){
-        const passCompare = req.body.password === user.password;
+        // const passCompare = req.body.password === user.password;
+        const passCompare = user.comparePassword(req.body.password);
         if(passCompare){
             const data = {
                 user:{
