@@ -17,38 +17,7 @@ const AddProduct = ()=>{
     });
 
 
-    const addProduct = async ()=>{
-        console.log("inside addProduct fnction and add clicked");
-        let dataObj ;
-        let product = productDetails;
-
-        let formData = new FormData();
-        formData.append('product',image);
-
-        await fetch('https://shopify-8ns5.onrender.com/upload',{
-            method:"POST",
-            headers:{
-                Accept:'application/json',
-            },
-            body:formData,
-        }).then((resp)=> resp.json())
-            .then((data)=>{dataObj = data});
-
-        if(dataObj.success){
-            product.image = dataObj.image_url;
-            await fetch('https://shopify-8ns5.onrender.com/addProduct',{
-                method:"POST",
-                headers:{
-                    Accept:'application/json',
-                    'Content-Type':'application/json',
-                },
-                body:JSON.stringify(product),
-            })
-                .then((resp)=> resp.json())
-                .then((data)=>{data.success ? alert("Product Added") : alert("Failed")});
-        
-        }
-    }
+    
 
     const changeHandler = (e)=>{
         setProductDetails({ ...productDetails, [e.target.name]:e.target.value });
